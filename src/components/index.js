@@ -1,4 +1,5 @@
-// export { default as ContactForm } from './ContactForm/ContactForm';
-// export { default as ContactList } from './ContactList/ContactList';
-// export { default as Filter } from './Filter/Filter';
-// export { default as NewForm } from './ContactForm/TestFormik';
+export { default as Searchbar } from './Searchbar/Searchbar';
+export { default as Modal } from './Modal/Modal';
+export { default as Loader } from './Loader/Loader';
+export { default as ImageGallery } from './ImageGallery/ImageGallery';
+export { default as Button } from './Button/Button';

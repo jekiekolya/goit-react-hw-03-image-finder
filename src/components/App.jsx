@@ -1,10 +1,27 @@
 import React, { Component } from 'react';
-import { Box } from './Box';
+
+import { fetchPhoto } from 'api/fetch-photo';
+import { Searchbar } from './index';
+
+import { Box } from './App.styled';
 
 export class App extends Component {
-  state = {};
+  state = {
+    photos: [],
+  };
+
+  async componentDidMount() {
+    const page = 1;
+    const q = 'cat';
+    const response = await fetchPhoto(q, page);
+    console.log(response.data.hits);
+  }
 
   render() {
-    return <Box bg="mainBg" color="text" padding="30px"></Box>;
+    return (
+      <Box>
+        <Searchbar />
+      </Box>
+    );
   }
 }
