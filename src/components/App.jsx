@@ -42,10 +42,11 @@ export class App extends Component {
           if (r.data.hits.length === 0) {
             Notify.failure(`We didn't find anything!`);
           }
-          this.setState(() => {
+          this.setState(prevState => {
             return {
-              photos: [...this.state.photos, ...r.data.hits],
+              photos: [...prevState.photos, ...r.data.hits],
               totalItems: r.data.total,
+              spinner: false,
             };
           });
         })
@@ -61,7 +62,13 @@ export class App extends Component {
 
     if (searchQuery !== this.state.query) {
       this.setState(() => {
-        return { page: 1, query: searchQuery, photos: [], totalItems: 0 };
+        return {
+          page: 1,
+          query: searchQuery,
+          photos: [],
+          totalItems: 0,
+          spinner: true,
+        };
       });
     } else {
       Notify.failure(`Put something else!`);
@@ -70,7 +77,7 @@ export class App extends Component {
 
   loadMore = () => {
     this.setState(prevState => {
-      return { page: prevState.page + 1 };
+      return { page: prevState.page + 1, spinner: true };
     });
   };
 
@@ -82,8 +89,10 @@ export class App extends Component {
       <Container>
         <Searchbar handelSubmit={handelSubmit} />
         <ImageGallery photos={photos} />
-        {totalItems > page * 12 && (
-          <Button labelName="Load more" handleClick={loadMore} />
+        {totalItems > page * 12 && !spinner && (
+          <Box display="flex" justifyContent="center">
+            <Button labelName="Load more" handleClick={loadMore} />
+          </Box>
         )}
 
         {spinner && (
