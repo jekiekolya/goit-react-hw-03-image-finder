@@ -1,5 +1,3 @@
-// import BsSearch from 'react-icons/bs';
-
 import {
   Header,
   Form,
@@ -8,16 +6,16 @@ import {
   InputField,
 } from './Searchbar.styled';
 
-export default function Searchbar() {
+export default function Searchbar({ handelSubmit }) {
   return (
     <Header>
-      {/* <BsSearch /> */}
-      <Form>
+      <Form onSubmit={handelSubmit}>
         <SearchButton type="submit">
           <ButtonLabel>Search</ButtonLabel>
         </SearchButton>
 
         <InputField
+          name="query"
           type="text"
           autocomplete="off"
           autoFocus

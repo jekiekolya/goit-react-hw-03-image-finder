@@ -1,9 +1,9 @@
 import { Item, Img } from './ImageGalleryItem.styled';
 
-export default function ImageGalleryItem() {
+export default function ImageGalleryItem({ url, name }) {
   return (
     <Item>
-      <Img src="" alt="" />
+      <Img src={url} alt={name} />
     </Item>
   );
 }
