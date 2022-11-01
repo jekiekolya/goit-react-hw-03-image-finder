@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { List } from './ImageGallery.styled';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 
@@ -7,7 +9,7 @@ export default function ImageGallery({ photos }) {
       {photos.map(photo => {
         return (
           <ImageGalleryItem
-            key={photo.id.toString()}
+            key={photo.id}
             url={photo.webformatURL}
             name={photo.tags}
           />
@@ -16,3 +18,13 @@ export default function ImageGallery({ photos }) {
     </List>
   );
 }
+
+ImageGallery.propTypes = {
+  photos: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    })
+  ),
+};

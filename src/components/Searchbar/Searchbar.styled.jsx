@@ -63,7 +63,7 @@ export const ButtonLabel = styled.span`
 export const InputField = styled.input`
   display: inline-block;
   width: 100%;
-  font: inherit;
+  font-family: inherit;
   font-size: 20px;
   border: none;
   outline: none;
@@ -71,7 +71,7 @@ export const InputField = styled.input`
   padding-right: 4px;
 
   &&::placeholder {
-    font: inherit;
+    font-family: inherit;
     font-size: 18px;
   }
 `;

@@ -14,7 +14,7 @@ export class App extends Component {
     query: '',
     photos: [],
     totalItems: 0,
-    spinner: false,
+    isLoading: false,
   };
 
   // componentDidMount() {
@@ -22,8 +22,8 @@ export class App extends Component {
   //     .then(r => {
   //       this.setState(() => {
   //         return {
-  //           photos: [...this.state.photos, ...r.data.hits],
-  //           totalItems: r.data.total,
+  //           photos: [...this.state.photos, ...r.hits],
+  //           totalItems: r.total,
   //         };
   //       });
   //     })
@@ -39,19 +39,25 @@ export class App extends Component {
     ) {
       fetchPhoto(this.state.query, this.state.page)
         .then(r => {
-          if (r.data.hits.length === 0) {
+          if (r.hits.length === 0) {
             Notify.failure(`We didn't find anything!`);
           }
           this.setState(prevState => {
             return {
-              photos: [...prevState.photos, ...r.data.hits],
-              totalItems: r.data.total,
-              spinner: false,
+              photos: [...prevState.photos, ...r.hits],
+              totalItems: r.total,
             };
           });
         })
         .catch(error => {
           Notify.failure(`We have a problem!`);
+        })
+        .finally(() => {
+          this.setState(() => {
+            return {
+              isLoading: false,
+            };
+          });
         });
     }
   }
@@ -67,7 +73,7 @@ export class App extends Component {
           query: searchQuery,
           photos: [],
           totalItems: 0,
-          spinner: true,
+          isLoading: true,
         };
       });
     } else {
@@ -77,25 +83,25 @@ export class App extends Component {
 
   loadMore = () => {
     this.setState(prevState => {
-      return { page: prevState.page + 1, spinner: true };
+      return { page: prevState.page + 1, isLoading: true };
     });
   };
 
   render() {
     const { handelSubmit, loadMore } = this;
-    const { photos, totalItems, page, spinner } = this.state;
+    const { photos, totalItems, page, isLoading } = this.state;
 
     return (
       <Container>
         <Searchbar handelSubmit={handelSubmit} />
         <ImageGallery photos={photos} />
-        {totalItems > page * 12 && !spinner && (
+        {totalItems > page * 12 && !isLoading && (
           <Box display="flex" justifyContent="center">
             <Button labelName="Load more" handleClick={loadMore} />
           </Box>
         )}
 
-        {spinner && (
+        {isLoading && (
           <Box display="flex" justifyContent="center">
             <ThreeDots
               height="80"

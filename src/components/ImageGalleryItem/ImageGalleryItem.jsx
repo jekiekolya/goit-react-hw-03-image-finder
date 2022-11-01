@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { Item, Img } from './ImageGalleryItem.styled';
 
 export default function ImageGalleryItem({ url, name }) {
@@ -7,3 +9,8 @@ export default function ImageGalleryItem({ url, name }) {
     </Item>
   );
 }
+
+ImageGalleryItem.propTypes = {
+  url: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+};

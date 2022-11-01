@@ -17,8 +17,8 @@ export async function fetchPhoto(searchValue, numberPage) {
   };
 
   try {
-    let response = await axios.get(`${BASE_URL}`, config);
-    return response;
+    let { data } = await axios.get(`${BASE_URL}`, config);
+    return data;
   } catch (error) {
     return error;
   }

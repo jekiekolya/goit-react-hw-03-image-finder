@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import {
   Header,
   Form,
@@ -25,3 +27,7 @@ export default function Searchbar({ handelSubmit }) {
     </Header>
   );
 }
+
+Searchbar.propTypes = {
+  handelSubmit: PropTypes.func.isRequired,
+};
