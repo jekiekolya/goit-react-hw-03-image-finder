@@ -3,7 +3,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { ThreeDots } from 'react-loader-spinner';
 
 import { fetchPhoto } from 'api/fetch-photo';
-import { Searchbar, ImageGallery, Button } from './index';
+import { Searchbar, ImageGallery, Button, Modal } from './index';
 
 import { Box } from './Box';
 import { Container } from './App.styled';
@@ -15,8 +15,14 @@ export class App extends Component {
     photos: [],
     totalItems: 0,
     isLoading: false,
+    isModalShow: false,
+    modalData: {
+      largeImageURL: '',
+      altName: '',
+    },
   };
 
+  // Logic for first research
   // componentDidMount() {
   //   fetchPhoto(this.state.query, this.state.page)
   //     .then(r => {
@@ -33,6 +39,7 @@ export class App extends Component {
   // }
 
   componentDidUpdate(_, prevState) {
+    // Fetch data
     if (
       prevState.page !== this.state.page ||
       prevState.query !== this.state.query
@@ -87,20 +94,44 @@ export class App extends Component {
     });
   };
 
+  toggleIsModalShow = () => {
+    this.setState(prevState => {
+      return { isModalShow: !prevState.isModalShow };
+    });
+  };
+
+  openModalWindow = newModalData => {
+    if (newModalData.largeImageURL !== this.state.modalData.largeImageURL) {
+      this.setState(() => {
+        return {
+          modalData: { ...newModalData },
+        };
+      });
+    }
+    this.toggleIsModalShow();
+  };
+
   render() {
-    const { handelSubmit, loadMore } = this;
-    const { photos, totalItems, page, isLoading } = this.state;
+    const { handelSubmit, loadMore, toggleIsModalShow, openModalWindow } = this;
+    const { photos, totalItems, page, isLoading, isModalShow, modalData } =
+      this.state;
 
     return (
       <Container>
+        {/* ---------Header------------- */}
         <Searchbar handelSubmit={handelSubmit} />
-        <ImageGallery photos={photos} />
+
+        {/* ---------Gallery------------- */}
+        <ImageGallery photos={photos} openModalWindow={openModalWindow} />
+
+        {/* ---------Load more------------- */}
         {totalItems > page * 12 && !isLoading && (
           <Box display="flex" justifyContent="center">
             <Button labelName="Load more" handleClick={loadMore} />
           </Box>
         )}
 
+        {/* ---------Loader------------- */}
         {isLoading && (
           <Box display="flex" justifyContent="center">
             <ThreeDots
@@ -113,6 +144,11 @@ export class App extends Component {
               visible={true}
             />
           </Box>
+        )}
+
+        {/* ---------Modal window------------- */}
+        {isModalShow && (
+          <Modal modalData={modalData} toggleIsModalShow={toggleIsModalShow} />
         )}
       </Container>
     );
